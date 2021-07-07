@@ -1,10 +1,10 @@
 # Docker Alpine Base Image
 
-*GitHub Source* https://github.com/jessenich/docker-alpine
+*GitHub Source* https://github.com/jessenich/docker-alpine-base
 
-*DockerHub Registry* https://dockerhub.com/r/jessenich91/alpine
+*DockerHub Registry* https://dockerhub.com/r/jessenich91/base-alpine
 
-`docker pull jessenich91/alpine:latest`
+`docker pull jessenich91/base-alpine:latest`
 
 ## Contents
 
@@ -36,8 +36,8 @@ To run a specific version of any variant specify the semver in place of latest, 
 
 ## License
 
-Copyright (c) 2021 Jesse N. <jesse@keplerdev.com>. See [LICENSE](https://github.com/jessenich/docker-tftpd-pxe/blob/master/LICENSE) for license information.  
+Copyright (c) 2021 Jesse N. <jesse@keplerdev.com>. See [LICENSE](https://github.com/jessenich/docker-alpine-base/blob/master/LICENSE) for license information.
 
-As with all Docker images, the built image likely also contains other software which may be under other licenses (such as software from the base distribution, along with any direct or indirect dependencies of the primary software being contained).  
-  
+As with all Docker images, the built image likely also contains other software which may be under other licenses (such as software from the base distribution, along with any direct or indirect dependencies of the primary software being contained).
+
 As for any pre-built image usage, it is the image user's responsibility to ensure that any use of this image complies with any relevant licenses for all software contained within.
