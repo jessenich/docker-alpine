@@ -10,7 +10,7 @@ env:
   GHCR_URL: ghcr.io
   PUSH_TO_DHCR: true
   PUSH_TO_GHCR: true
-  PUSH_TO_ACR: false
+  PUSH_TO_AZCR: false
 
 
 jobs:
