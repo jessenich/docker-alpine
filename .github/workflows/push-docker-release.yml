@@ -19,7 +19,7 @@ jobs:
 
     strategy:
       matrix:
-        no_docs=["true","false"]
+        no_docs: [ true, false ]
 
     permissions:
       contents: read
@@ -84,11 +84,13 @@ jobs:
         with:
           images: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}
-            ghcr.io/${{ githhub.repository }}
+            ghcr.io/${{ github.repository }}
           tags: type=semver,pattern={{raw}}
 
       - name: Build & Push Dev Latest
         uses: docker/build-push-action@v2
+        env:
+          NO_DOCS: ${{ matrix.no_docs }}
         with:
           context: .
           file: ./Dockerfile
@@ -101,7 +103,7 @@ jobs:
           build-args: |
             ALPINE_IMAGE="latest"
             USER="jessenich"
-            NO_DOCS=${{ matrix.no_docs }}
+            NO_DOCS=${{ env.NO_DOCS }}
           platforms: ${{ env.TARGET_PLATFORMS }}
           pull: true
           push: true
