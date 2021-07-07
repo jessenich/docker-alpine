@@ -14,7 +14,7 @@ param(
     [Alias('i')]
     [Alias('-image-version')]
     [ValidateNotNullOrEmpty]
-    [string]$User,
+    [string]$User = "jessenich",
 
     [Parameter(
         Mandatory = $false,
@@ -48,7 +48,7 @@ param(
         ValueFromPipelineByPropertyName = $false,
         HelpMessage = "Repository which the image will be pushed upon successful build. Default value: 'alpine-zsh'")]
     [Alias('-repository')]
-    [string]$Repository = 'alpine-zsh'
+    [string]$Repository = 'base-alpine'
 )
 
 begin {
@@ -58,6 +58,12 @@ begin {
 
     $Script:Tag1 = 'latest';
     $Script:Tag2 = $ImageVersion;
+
+    if ($NoDocs -eq $true) {
+        $Script:Tag1 = $Script:Tag1 += "-do-docs";
+        $Script:Tag2 = $Script:Tag2 += "-no-docs";
+    }
+
     $Script:RepositoryRoot = '.';
 }
 

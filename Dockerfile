@@ -8,12 +8,12 @@ FROM alpine:"${ALPINE_VERSION:-latest}"
 LABEL maintainer="Jesse N. <jesse@keplerdev.com>"
 
 ARG USER= \
-    INCLUDE_DOCS=
+    NO_DOCS=
 
 ENV USER="${USER:-jessenich}" \
     ALPINE_VERSION="${ALPINE_VERSION}" \
     HOME="/home/${USER}" \
-    INCLUDE_DOCS="${INCLUDE_DOCS:-true}" \
+    NO_DOCS="${INCLUDE_DOCS:-true}" \
     TZ="America/NewYork" \
     RUNNING_IN_DOCKER="true"
 
@@ -31,8 +31,8 @@ RUN adduser -D "${USER}" && \
         jq \
         yq \
         sudo && \
-    if [ "${INCLUDE_DOCS}" = "true" ]; then \
-        apk add \
+    if [ "${NO_DOCS}" = "false" ]; then \
+        apk --update --no-cache add \
             man-pages \
             man-db \
             man-db-doc \
