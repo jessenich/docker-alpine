@@ -45,7 +45,7 @@ jobs:
 
       - name: Buildx Builder Create
         run: |
-          docker buildx create --platform "${{ env.TARGET_PLATFORMS }}
+          docker buildx create --platform "${{ env.TARGET_PLATFORMS }}"
 
       - name: Cache Docker layers
         uses: actions/cache@v2
