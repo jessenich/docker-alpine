@@ -1,3 +1,5 @@
+[![Push Latest Docker Image](https://github.com/jessenich/docker-alpine-base/actions/workflows/push-docker-release.yml/badge.svg)](https://github.com/jessenich/docker-alpine-base/actions/workflows/push-docker-release.yml)
+
 # Docker Alpine Base Image
 
 *GitHub Source* https://github.com/jessenich/docker-alpine-base
