@@ -44,7 +44,7 @@ RUN if [ "${NO_DOCS}" = "false" ]; \
             jq-doc \
             yq-doc \
             sudo-doc; \
-fi
+    fi
 
 RUN rm /var/cache/apk/*
 
