@@ -1,0 +1,17 @@
+name: Tag on Commit
+#on:
+#  push:
+#    branches:
+#      - main
+#      - master
+
+jobs:
+  push-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Bump Tag
+        uses: jessenich/tag-bump-util
+      
