@@ -17,10 +17,10 @@ ENV USER=${USER:-jessenich} \
     TZ=America/NewYork \
     RUNNING_IN_DOCKER=1
 
-RUN adduser -D ${USER} && \
+RUN adduser -D "\"$USER\"" && \
     mkdir -p /etc/sudoers.d && \
-    echo "${USER} ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/${USER}" && \
-    chmod 0440 "/etc/sudoers.d/${USER}" && \
+    echo "$USER ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/$USER" && \
+    chmod 0440 "/etc/sudoers.d/$USER" && \
     apk add \
         ca-certificates \
         nano \
