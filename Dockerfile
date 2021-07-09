@@ -10,16 +10,16 @@ LABEL maintainer="Jesse N. <jesse@keplerdev.com>"
 ARG USER= \
     NO_DOCS=
 
-ENV USER="${USER:-jessenich}" \
-    ALPINE_VERSION="${ALPINE_VERSION}" \
-    HOME="/home/${USER}" \
-    NO_DOCS="${INCLUDE_DOCS:-true}" \
-    TZ="America/NewYork" \
-    RUNNING_IN_DOCKER="true"
+ENV USER=${USER:-jessenich} \
+    ALPINE_VERSION=${ALPINE_VERSION} \
+    HOME=/home/${USER} \
+    NO_DOCS=${INCLUDE_DOCS:-true} \
+    TZ=America/NewYork \
+    RUNNING_IN_DOCKER=1
 
-RUN adduser -D "${USER}" && \
+RUN adduser -D ${USER} && \
     mkdir -p /etc/sudoers.d && \
-    echo "$USER ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/${USER}" && \
+    echo "${USER} ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/${USER}" && \
     chmod 0440 "/etc/sudoers.d/${USER}" && \
     apk --update --no-cache add \
         ca-certificates \
