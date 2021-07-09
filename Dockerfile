@@ -21,7 +21,7 @@ RUN adduser -D ${USER} && \
     mkdir -p /etc/sudoers.d && \
     echo "${USER} ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/${USER}" && \
     chmod 0440 "/etc/sudoers.d/${USER}" && \
-    apk --update --no-cache add \
+    apk add \
         ca-certificates \
         nano \
         nano-syntax \
@@ -32,7 +32,7 @@ RUN adduser -D ${USER} && \
         yq \
         sudo && \
     if [ "${NO_DOCS}" = "false" ]; then \
-        apk --update --no-cache add \
+        apk add \
             man-pages \
             man-db \
             man-db-doc \
@@ -42,7 +42,8 @@ RUN adduser -D ${USER} && \
             jq-doc \
             yq-doc \
             sudo-doc; \
-    fi
+    fi && \
+    rm /var/cache/apk/*
 
 USER ${USER}
 WORKDIR ${HOME}
