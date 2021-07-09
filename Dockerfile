@@ -10,17 +10,16 @@ LABEL maintainer="Jesse N. <jesse@keplerdev.com>"
 ARG USER=jessenich
 ARG NO_DOCS=false
 
-ENV USER=${USER:-jessenich} \
+ENV USER=${USER} \
     ALPINE_VERSION=${ALPINE_VERSION} \
     HOME=/home/${USER} \
     NO_DOCS=${NO_DOCS} \
     TZ=America/NewYork \
     RUNNING_IN_DOCKER=1
 
-RUN adduser -D "\"$USER\"" && \
-    mkdir -p /etc/sudoers.d && \
-    echo "$USER ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/$USER" && \
-    chmod 0440 "/etc/sudoers.d/$USER" && \
+RUN mkdir -p /tmp/builder
+COPY resources/adduser.sh /tmp/builder/adduser.sh
+RUN /tmp/builder/adduser.sh $USER && \
     apk add \
         ca-certificates \
         nano \
@@ -46,7 +45,8 @@ RUN if [ "${NO_DOCS}" = "false" ]; \
             sudo-doc; \
     fi
 
-RUN rm /var/cache/apk/*
+RUN rm /var/cache/apk/* && \
+    rm -rf /tmp/builder
 
 USER ${USER}
 WORKDIR ${HOME}

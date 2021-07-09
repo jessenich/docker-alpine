@@ -9,7 +9,7 @@ username="jessenich";
 no_docs="false";
 alpine_version="latest";
 registry="jessenich91";
-repository="base-alpine";å
+repository="base-alpine";
 
 show_usage() {
     echo  "Usage: $0 -i [--image-version] x.x.x [FLAGS]" && \

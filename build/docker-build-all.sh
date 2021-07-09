@@ -19,10 +19,9 @@ show_usage() {
 }
 
 run() {
-    script_prefix=$(dirname "$0")
-
+    script_prefix=$(dirname "$0");
     /bin/sh "${script_prefix}/docker-build.sh" -i "$image_version" -u "${username}" -a "${alpine_version}" --registry "${registry}" --repository "${repository}" && \
-    /bin/sh "${script_prefix}/docker-build.sh" -i "$image_version" --no-docs --registry "${registry}" --repository "${repository}"
+    /bin/sh "${script_prefix}/docker-build.sh" -i "$image_version" --no-docs --registry "${registry}" --repository "${repository}";
 }
 
 main() {
@@ -35,17 +34,19 @@ main() {
 
             -i | --image-version)
                 image_version="$2";
+                shift;
             ;;
 
             --registry)
                 registry="$2";
+                shift;
             ;;
 
             --repository)
                 repository="$2";
+                shift;
             ;;
         esac
-        shift
     done
 }
 
