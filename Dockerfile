@@ -1,19 +1,19 @@
 # Copyright (c) 2021 Jesse N. <jesse@keplerdev.com>
 # This work is licensed under the terms of the MIT license. For a copy, see <https://opensource.org/licenses/MIT>.
 
-ARG ALPINE_VERSION=
+ARG ALPINE_VERSION=latest
 
-FROM alpine:"${ALPINE_VERSION:-latest}"
+FROM alpine:"${ALPINE_VERSION}"
 
 LABEL maintainer="Jesse N. <jesse@keplerdev.com>"
 
-ARG USER= \
-    NO_DOCS=
+ARG USER=jessenich
+ARG NO_DOCS=false
 
 ENV USER=${USER:-jessenich} \
     ALPINE_VERSION=${ALPINE_VERSION} \
     HOME=/home/${USER} \
-    NO_DOCS=${INCLUDE_DOCS:-true} \
+    NO_DOCS=${NO_DOCS} \
     TZ=America/NewYork \
     RUNNING_IN_DOCKER=1
 
@@ -30,8 +30,10 @@ RUN adduser -D ${USER} && \
         wget \
         jq \
         yq \
-        sudo && \
-    if [ "${NO_DOCS}" = "false" ]; then \
+        sudo
+
+RUN if [ "${NO_DOCS}" = "false" ]; \
+    then \
         apk add \
             man-pages \
             man-db \
@@ -42,8 +44,9 @@ RUN adduser -D ${USER} && \
             jq-doc \
             yq-doc \
             sudo-doc; \
-    fi && \
-    rm /var/cache/apk/*
+fi
+
+RUN rm /var/cache/apk/*
 
 USER ${USER}
 WORKDIR ${HOME}
