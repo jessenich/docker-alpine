@@ -19,7 +19,8 @@ ENV USER=${USER} \
 
 RUN mkdir -p /tmp/builder
 COPY resources/adduser.sh /tmp/builder/adduser.sh
-RUN /tmp/builder/adduser.sh $USER && \
+RUN chmod +ux /tmp/builder/adduser.sh && \
+    /tmp/builder/adduser.sh $USER && \
     apk add \
         ca-certificates \
         nano \
