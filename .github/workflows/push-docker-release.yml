@@ -88,9 +88,9 @@ jobs:
             "com.keplerdev.repository.github.url: https://github.com/${{ github.repository }}"
             "com.keplerdev.registry.dockerhub.url: https://dockerhub.com/${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}"
           build-args: |
-            ALPINE_IMAGE: latest
-            USER: jessenich
-            NO_DOCS: false
+            ALPINE_IMAGE=latest
+            USER=jessenich
+            NO_DOCS=false
           platforms: ${{ env.TARGET_PLATFORMS }}
           pull: true
           push: true
@@ -109,10 +109,10 @@ jobs:
             "com.keplerdev.image.sha": ${{ github.sha }}
             "com.keplerdev.repository.github.url: https://github.com/${{ github.repository }}"
             "com.keplerdev.registry.dockerhub.url: https://dockerhub.com/${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}"
-          build-args:
-            ALPINE_IMAGE: latest
-            USER: jessenich
-            NO_DOCS: true
+          build-args: |
+            ALPINE_IMAGE=latest
+            USER=jessenich
+            NO_DOCS=true
           platforms: ${{ env.TARGET_PLATFORMS }}
           pull: true
           push: true
