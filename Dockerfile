@@ -13,7 +13,6 @@ ARG NO_DOCS=false
 ENV USER=${USER} \
     ALPINE_VERSION=${ALPINE_VERSION} \
     HOME=/home/${USER} \
-    NO_DOCS=${NO_DOCS} \
     TZ=America/NewYork \
     RUNNING_IN_DOCKER=1
 
