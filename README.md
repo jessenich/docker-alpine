@@ -26,17 +26,13 @@ Baseline image used in all alpine based images built for multiarch with a non-ro
 
 ## Run
 
-Run latest, standard variant. Includes man-docs and glibc:
+Run latest, standard variant.
 
 `docker -rm -it jessenich91/base-alpine:latest`
 
-Run latest, no-doc variant. Includes glibc:
-
-`docker -rm -it jessenich91/base-alpine:latest-no-docs`
-
 To run a specific version of any variant specify the semver in place of latest, e.g.:
 
-`docker -rm -it jessenich91/base-alpine:1.2.0-no-docs`
+`docker -rm -it jessenich91/base-alpine:1.2.0`
 
 ## License
 
