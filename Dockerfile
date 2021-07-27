@@ -32,20 +32,6 @@ RUN chmod +ux /tmp/builder/adduser.sh && \
         yq \
         sudo
 
-RUN if [ "${NO_DOCS}" = "false" ]; \
-    then \
-        apk add \
-            man-pages \
-            man-db \
-            man-db-doc \
-            nano-doc \
-            curl-doc \
-            wget-doc \
-            jq-doc \
-            yq-doc \
-            sudo-doc; \
-    fi
-
 RUN rm /var/cache/apk/* && \
     rm -rf /tmp/builder
 
