@@ -25,6 +25,6 @@
 **/obj
 **/secrets.dev.yaml
 **/values.dev.yaml
-README.md
-
-**/.gitpod.yml
+**/README.md
+**/*.gitpod.yml
+**/build
