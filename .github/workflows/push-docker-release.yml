@@ -5,7 +5,7 @@ on:
     types: [published]
 
 env:
-  TARGET_PLATFORMS: "linux/amd64,linux/arm64/v8,linux/arm/v7"
+  TARGET_PLATFORMS: linux/amd64,linux/arm64/v8,linux/arm/v7
   ALPINE_VERSION: latest
   GHCR_URL: ghcr.io
   PUSH_TO_DHCR: true
