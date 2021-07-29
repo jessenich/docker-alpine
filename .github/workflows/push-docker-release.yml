@@ -11,7 +11,14 @@ env:
   PUSH_TO_DHCR: true
   PUSH_TO_GHCR: true
   PUSH_TO_AZCR: false
-
+  LABELS: |
+    maintainer: Jesse N. <jesse@keplerdev.com>
+    com.keplerdev.maintainer: Jesse N. <jesse@keplerdev.com>
+    com.keplerdev.maintainer.github.url: "https://github.com/${{ github.actor }}"
+    com.keplerdev.maintainer.dockerhub.url: "https://dockerhub.com/u/${{ secrets.DOCKERHUB_USERNAME }}"
+    com.keplerdev.image.sha: "${{ github.sha }}"
+    com.keplerdev.repository.github.url: "https://github.com/${{ github.repository }}"
+    com.keplerdev.registry.dockerhub.url: "https://dockerhub.com/r/${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}"
 
 jobs:
   build-docker-image:
@@ -41,7 +48,10 @@ jobs:
 
       - name: Buildx Builder Create
         run: |
-          docker buildx create --platform "${{ env.TARGET_PLATFORMS }}"
+          docker buildx create \
+            --platform "${{ env.TARGET_PLATFORMS }}" \
+            --name "github-runner-builder" \
+            --use
 
       - name: Cache Docker layers
         uses: actions/cache@v2
@@ -71,24 +81,22 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}
-            ghcr.io/${{ github.repository }}
+            "${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}"
+            "ghcr.io/${{ github.repository }}"
           tags: type=semver,pattern={{raw}}
 
       - name: Build & Push Latest
         uses: docker/build-push-action@v2
+        env:
+          platforms: "${{ env.TARGET_PLATFORMS }}"
         with:
           context: .
           file: ./Dockerfile
-          labels: |
-            "com.keplerdev.maintainer: Jesse N. <jesse@keplerdev.com>"
-            "com.keplerdev.image.sha": ${{ github.sha }}
-            "com.keplerdev.repository.github.url: https://github.com/${{ github.repository }}"
-            "com.keplerdev.registry.dockerhub.url: https://dockerhub.com/${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}"
+          labels: "${{ env.LABELS }}"
           build-args: |
             ALPINE_IMAGE=latest
             USER=jessenich
-          platforms: ${{ env.TARGET_PLATFORMS }}
+          platforms: "${{ env.platforms }}"
           pull: true
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: "${{ steps.meta.outputs.tags }}"
