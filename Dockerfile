@@ -18,7 +18,7 @@ ENV USER=${USER} \
 
 RUN mkdir -p /tmp/builder
 COPY resources/adduser.sh /tmp/builder/adduser.sh
-RUN chmod +ux /tmp/builder/adduser.sh && \
+RUN chmod +x /tmp/builder/adduser.sh && \
     /tmp/builder/adduser.sh $USER && \
     apk add \
         ca-certificates \
