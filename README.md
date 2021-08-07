@@ -2,17 +2,17 @@
 
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/jessenich/docker-alpine-base)
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/jessenich91/base-alpine?label=DOCKERHUB%20PULLS&style=for-the-badge)](https://dockerhub.com/r/jessenich91/base-alpine)
+[![Docker Pulls](https://img.shields.io/docker/pulls/jessenich91/base-alpine?label=DOCKERHUB%20PULLS&style=for-the-badge)](https://dockerhub.com/r/jessenich91/alpine)
 
 # Docker Alpine Base Image
 
 *GitHub Source* https://github.com/jessenich/docker-alpine-base
 
-`docker pull jessenich91/base-alpine:latest`
+`docker pull jessenich91/alpine:latest`
 
 *DockerHub Registry* https://dockerhub.com/r/jessenich91/alpine
 
-`docker pull ghcr.io/jessenich/docker-alpine-base:latest`
+`docker pull ghcr.io/jessenich/docker-alpine:latest`
 
 ## Contents
 
