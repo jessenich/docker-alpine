@@ -33,7 +33,7 @@ jobs:
         com.keplerdev.image.builder.workflow.name: "${{ github.workflow }}"
         com.keplerdev.image.name: "${{ secrets.DOCKERHUB_REPO }}"
         com.keplerdev.image.base.name: alpine
-        com.keplerdev.image.base.variant: "${{ env.ALPINE_VERSION }}"
+        com.keplerdev.image.base.variant: "${ALPINE_VERSION}"
         com.keplerdev.repository.github.url: "https://github.com/${{ github.repository }}"
         com.keplerdev.registry.dockerhub.url: "https://dockerhub.com/r/${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}"
 
