@@ -8,9 +8,11 @@
 
 *GitHub Source* https://github.com/jessenich/docker-alpine-base
 
+`docker pull jessenich91/base-alpine:latest`
+
 *DockerHub Registry* https://dockerhub.com/r/jessenich91/base-alpine
 
-`docker pull jessenich91/base-alpine:latest`
+`docker pull ghcr.io/jessenich/docker-alpine-base:latest`
 
 ## Contents
 
