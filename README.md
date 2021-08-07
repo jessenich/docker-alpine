@@ -26,7 +26,6 @@ Baseline image used in all alpine based images built for multiarch with a non-ro
 - jq
 - yq
 - sudo
-- man-docs (Optional)*
 
 ## Run
 
