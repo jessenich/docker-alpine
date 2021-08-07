@@ -10,7 +10,7 @@
 
 `docker pull jessenich91/base-alpine:latest`
 
-*DockerHub Registry* https://dockerhub.com/r/jessenich91/base-alpine
+*DockerHub Registry* https://dockerhub.com/r/jessenich91/alpine
 
 `docker pull ghcr.io/jessenich/docker-alpine-base:latest`
 
