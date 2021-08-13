@@ -3,18 +3,18 @@
 
 ARG ALPINE_VERSION=latest
 
-FROM alpine:"${ALPINE_VERSION}"
+FROM alpine:"${ALPINE_VERSION:-latest}"
 
 LABEL maintainer="Jesse N. <jesse@keplerdev.com>"
 LABEL org.opencontainers.image.source="https://github.com/jessenich/docker-alpine-base/blob/main/Dockerfile"
 
 ARG ADMIN=sysadm \
-    TZ=America/NewYork
+    TZ=UTC
 
-ENV ADMIN=$ADMIN \
-    ALPINE_VERSION=$ALPINE_VERSION \
+ENV ADMIN="${ADMIN:-sysadm}" \
+    ALPINE_VERSION="${ALPINE_VERSION:-latest}" \
     HOME="/home/$ADMIN" \
-    TZ=$TZ \
+    TZ="${TZ:-UTC}" \
     RUNNING_IN_DOCKER=true
 
 USER root
@@ -30,9 +30,11 @@ RUN chmod +x /usr/sbin/adduser.sh && \
         rsync \
         curl \
         wget \
+        tzdata \
         jq \
         yq \
         shadow \
+        su-exec \
         sudo && \
     rm /var/cache/apk/* && \
     chmod 0640 /etc/shadow && \

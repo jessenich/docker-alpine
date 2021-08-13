@@ -35,10 +35,11 @@ Provisions default non rooted user defaulted to 'sysadm' with no password.
 - nano
 - curl
 - wget
+- tzdata
 - jq
 - yq
+- su-exec
 - sudo
-- non-rooted user
 
 ## Running this Image
 
