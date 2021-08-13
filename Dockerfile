@@ -6,21 +6,24 @@ ARG ALPINE_VERSION=latest
 FROM alpine:"${ALPINE_VERSION}"
 
 LABEL maintainer="Jesse N. <jesse@keplerdev.com>"
+LABEL org.opencontainers.image.source="https://github.com/jessenich/docker-alpine-base/blob/main/Dockerfile"
 
-ARG USER=jessenich
-ARG NO_DOCS=false
+ARG ADMIN=sysadm \
+    TZ=America/NewYork
 
-ENV USER=${USER} \
-    ALPINE_VERSION=${ALPINE_VERSION} \
-    HOME=/home/${USER} \
-    TZ=America/NewYork \
-    RUNNING_IN_DOCKER=1
+ENV ADMIN=$ADMIN \
+    ALPINE_VERSION=$ALPINE_VERSION \
+    HOME="/home/$ADMIN" \
+    TZ=$TZ \
+    RUNNING_IN_DOCKER=true
 
-RUN mkdir -p /tmp/builder
-COPY resources/adduser.sh /tmp/builder/adduser.sh
-RUN chmod +x /tmp/builder/adduser.sh && \
-    /tmp/builder/adduser.sh $USER && \
-    apk add \
+USER root
+
+COPY ./lxfs /
+RUN chmod +x /usr/sbin/adduser.sh && \
+    apk update && \
+    apk upgrade && \
+        apk add \
         ca-certificates \
         nano \
         nano-syntax \
@@ -29,10 +32,16 @@ RUN chmod +x /tmp/builder/adduser.sh && \
         wget \
         jq \
         yq \
-        sudo
+        shadow \
+        sudo && \
+    rm /var/cache/apk/* && \
+    chmod 0640 /etc/shadow && \
+    mkdir -p "${HOME}" && \
+    mkdir -p /etc/sudoers.d && \
+    echo "${ADMIN} ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/${ADMIN}" && \
+    chmod 0440 "/etc/sudoers.d/${ADMIN}" && \
+    adduser -D -h "${HOME}" -s /bin/ash "${ADMIN}";
 
-RUN rm /var/cache/apk/* && \
-    rm -rf /tmp/builder
-
-USER ${USER}
+USER ${ADMIN}
 WORKDIR ${HOME}
+CMD /bin/ash
