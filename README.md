@@ -16,7 +16,7 @@
 
 ## What is this image?
 
-Baseline image used in all alpine based images.
+Baseline image used in all alpine based images. Provisions default non rooted user defaulted to 'sysadm' with no password.
 
 ### Image Meta
 
