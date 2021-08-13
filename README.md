@@ -14,9 +14,15 @@
 
 `docker pull ghcr.io/jessenich/docker-alpine:latest`
 
-## Contents
+## What is this image?
 
-Baseline image used in all alpine based images built for multiarch with a non-rooted user and the following installed & pre-configured:
+Baseline image used in all alpine based images.
+
+### Image Meta
+
+Based off Alpine 14 as of the latest release.
+
+#### Installed Paxkages:
 
 - ca-certificates
 - rsync
@@ -27,7 +33,7 @@ Baseline image used in all alpine based images built for multiarch with a non-ro
 - yq
 - sudo
 
-## Run
+## Running this Image
 
 Run latest, standard variant.
 
