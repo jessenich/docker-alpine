@@ -1,17 +1,15 @@
 name: "Push Docker Image"
 
 on:
-  push:
-    tags:
-      - "v*"
+  workflow_dispatch:
+  # push:
+  #   tags:
+  #     - "v*"
 
 env:
   TARGET_PLATFORMS: linux/amd64,linux/arm64/v8,linux/arm/v7
   ALPINE_VERSION: latest
   GHCR_URL: ghcr.io
-  PUSH_TO_DHCR: true
-  PUSH_TO_GHCR: true
-  PUSH_TO_AZCR: false
 
 jobs:
   build-docker-image:
@@ -66,14 +64,12 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: Login to Dockerhub
-        if: ${{ env.PUSH_TO_DHCR }} != "false"
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login to ghcr.io
-        if: ${{ env.PUSH_TO_GHCR }} != "false"
         uses: docker/login-action@v1
         with:
           registry: ${{ env.GHCR_URL }}

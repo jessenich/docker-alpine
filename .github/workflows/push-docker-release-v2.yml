@@ -1,0 +1,42 @@
+name: "Push Docker Image"
+
+on:
+  push:
+    tags:
+      - "v*"
+
+env:
+  TARGET_PLATFORMS: linux/amd64,linux/arm64/v8,linux/arm/v7
+  ALPINE_VERSION: latest
+  GHCR_URL: ghcr.io
+
+jobs:
+  build-docker-image:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    env:
+      LABELS: |
+        maintainer: Jesse N. <jesse@keplerdev.com>
+        com.keplerdev.maintainer: Jesse N. <jesse@keplerdev.com>
+        com.keplerdev.maintainer.github.url: "https://github.com/${{ github.actor }}"
+        com.keplerdev.maintainer.dockerhub.url: "https://dockerhub.com/u/${{ secrets.DOCKERHUB_USERNAME }}"
+        com.keplerdev.image.source.sha: "${{ github.sha }}"
+        com.keplerdev.image.source.ref: "${{ github.ref }}"
+        com.keplerdev.image.build.run-id: "${{ github.run_id }}"
+        com.keplerdev.image.build.run-number: "${{ github.run_number }}"
+        com.keplerdev.image.builder.workflow.name: "${{ github.workflow }}"
+        com.keplerdev.image.name: "${{ secrets.DOCKERHUB_REPO }}"
+        com.keplerdev.image.base.name: alpine
+        com.keplerdev.image.base.variant: "${ALPINE_VERSION}"
+        com.keplerdev.repository.github.url: "https://github.com/${{ github.repository }}"
+        com.keplerdev.registry.dockerhub.url: "https://dockerhub.com/r/${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      -
