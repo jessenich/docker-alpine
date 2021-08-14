@@ -20,8 +20,7 @@ ENV ADMIN="${ADMIN:-sysadm}" \
 USER root
 
 COPY ./lxfs /
-RUN chmod +x /usr/sbin/adduser.sh && \
-    apk update && \
+RUN apk update && \
     apk upgrade && \
         apk add \
         ca-certificates \
