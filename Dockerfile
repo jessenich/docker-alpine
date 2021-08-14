@@ -13,7 +13,7 @@ ARG ADMIN=sysadm \
 
 ENV ADMIN="${ADMIN:-sysadm}" \
     ALPINE_VERSION="${ALPINE_VERSION:-latest}" \
-    HOME="/home/$ADMIN" \
+    HOME="/home/${ADMIN}" \
     TZ="${TZ:-UTC}" \
     RUNNING_IN_DOCKER=true
 
