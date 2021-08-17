@@ -6,7 +6,7 @@ ARG ALPINE_VERSION=latest
 FROM alpine:"${ALPINE_VERSION:-latest}"
 
 LABEL maintainer="Jesse N. <jesse@keplerdev.com>"
-LABEL org.opencontainers.image.source="https://github.com/jessenich/docker-alpine-base/blob/main/Dockerfile"
+LABEL org.opencontainers.image.source="https://github.com/jessenich/docker-alpine/blob/main/Dockerfile"
 
 ARG ADMIN=sysadm \
     TZ=UTC
@@ -33,7 +33,6 @@ RUN apk update && \
         jq \
         yq \
         shadow \
-        su-exec \
         sudo && \
     rm /var/cache/apk/* && \
     chmod 0640 /etc/shadow && \
@@ -43,6 +42,6 @@ RUN apk update && \
     chmod 0440 "/etc/sudoers.d/${ADMIN}" && \
     adduser -D -h "${HOME}" -s /bin/ash "${ADMIN}";
 
-USER ${ADMIN}
-WORKDIR ${HOME}
-CMD /bin/ash
+USER "${ADMIN}"
+WORKDIR "${HOME}"
+CMD "/bin/ash"
