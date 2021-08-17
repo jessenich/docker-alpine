@@ -72,7 +72,7 @@ jobs:
             "${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}"
             "ghcr.io/${{ github.repository }}"
           tags: |
-            type=latest,enable=${{ equals(matrix.alpine-version, '3.14') }}
+            type=latest,enable=${{ startsWith(matrix.alpine-version, '3.14') }}
             type=semver,enable=${{ startsWith(github.ref, 'refs/tags/') }},pattern=v{{major}}.{{minor}}.{{patch}},suffix=.alpine.${{ matrix.alpine-version }}
             type=semver,enable=${{ startsWith(github.ref, 'refs/tags/') }},pattern={{major}}.{{minor}},suffix=.alpine.${{ matrix.alpine-version }}
 
