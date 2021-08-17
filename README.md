@@ -15,7 +15,7 @@
 
 [__DockerHub Registry__](https://dockerhub.com/r/jessenich91/alpine)
 
-`docker pull ghcr.io/jessenich/docker-alpine:latest`
+`docker pull ghcr.io/jessenich/alpine:latest`
 
 ## What is this image?
 
@@ -38,18 +38,17 @@ Provisions default non rooted user defaulted to 'sysadm' with no password.
 - tzdata
 - jq
 - yq
-- su-exec
 - sudo
 
 ## Running this Image
 
 Run latest, standard variant.
 
-`docker -rm -it jessenich91/base-alpine:latest`
+`docker -rm -it jessenich91/alpine:latest`
 
-To run a specific version of any variant specify the semver in place of latest, e.g.:
+To run a specific version:
 
-`docker -rm -it jessenich91/base-alpine:1.2.0`
+`docker -rm -it jessenich91/alpine:v1.7.12.alpine.3.13`
 
 ## License
 
