@@ -1,15 +1,19 @@
 name: "Push Docker Image"
 
 on:
-  #workflow_dispatch:
   push:
     tags:
       - "v*"
 
 env:
   TARGET_PLATFORMS: linux/amd64,linux/arm64/v8,linux/arm/v7
-  ALPINE_VERSION: latest
   GHCR_URL: ghcr.io
+  GHCR_LIBRARY: jessenich
+  GHCR_REPO: alpine
+  DOCKERHUB_LIBRARY: jessenich91
+  DOCKERHUB_REPO: alpine
+  LABELS: |
+    "maintainer=Jesse N. <jesse@keplerdev.com>"
 
 jobs:
   build-docker-image:
@@ -68,13 +72,15 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
+          labels: |
+            "${{ env.LABELS }}"
           images: |
-            "${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}"
-            "ghcr.io/${{ secrets.DOCKERHUB_REPO }}"
+            "${{ env.DOCKERHUB_LIBRARY }}/${{ env.DOCKERHUB_REPO }}"
+            "ghcr.io/${{ env.GHCR_LIBRARY }}/${{ env.GHCR_REPO }}"
           tags: |
-            type=raw,enable=${{ startsWith(matrix.alpine-version, '3.14') }},priority=100,value=latest
-            type=semver,enable=${{ startsWith(github.ref, 'refs/tags/') }},pattern={{major}}.{{minor}}.{{patch}},suffix=.alpine.${{ matrix.alpine-version }}
-            type=semver,enable=${{ startsWith(github.ref, 'refs/tags/') }},pattern={{major}}.{{minor}},suffix=.alpine.${{ matrix.alpine-version }}
+            type=raw,enable="${{ startsWith(matrix.alpine-version, '3.14') }}"",priority=100,value=latest
+            type=semver,enable="${{ startsWith(github.ref, 'refs/tags/') }}",pattern={{major}}.{{minor}}.{{patch}},suffix=-alpine.${{ matrix.alpine-version }}
+            type=semver,enable="${{ startsWith(github.ref, 'refs/tags/') }}",pattern={{major}}.{{minor}},suffix=-alpine.${{ matrix.alpine-version }}
 
       - name: Build & Push Latest
         uses: docker/build-push-action@v2
@@ -84,8 +90,9 @@ jobs:
           context: .
           file: ./Dockerfile
           build-args: |
-            ALPINE_IMAGE=${{ matrix.alpine-version }}
-            USER=sysadm
+            VARIANT=${{ matrix.alpine-version }}
+            NON_ROOT_ADMIN=sysadm
+            TZ=UTC
           platforms: "${{ env.platforms }}"
           pull: true
           push: true

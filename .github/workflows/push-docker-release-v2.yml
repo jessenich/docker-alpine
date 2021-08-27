@@ -7,6 +7,9 @@ env:
   TARGET_PLATFORMS: linux/amd64,linux/arm64/v8,linux/arm/v7
   ALPINE_VERSION: latest
   GHCR_URL: ghcr.io
+  LABELS: |
+    "maintainer=Jesse N. <jesse@keplerdev.com>"
+
 
 jobs:
   build-docker-image:

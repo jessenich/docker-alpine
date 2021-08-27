@@ -1,19 +1,19 @@
 # Copyright (c) 2021 Jesse N. <jesse@keplerdev.com>
 # This work is licensed under the terms of the MIT license. For a copy, see <https://opensource.org/licenses/MIT>.
 
-ARG ALPINE_VERSION=latest
+ARG VARIANT=3.14
 
-FROM alpine:"${ALPINE_VERSION:-latest}"
+FROM alpine:"${VARIANT:-3.14}"
 
 LABEL maintainer="Jesse N. <jesse@keplerdev.com>"
 LABEL org.opencontainers.image.source="https://github.com/jessenich/docker-alpine/blob/main/Dockerfile"
 
-ARG ADMIN=sysadm \
+ARG NON_ROOT_ADMIN=sysadm \
     TZ=UTC
 
-ENV ADMIN="${ADMIN:-sysadm}" \
-    ALPINE_VERSION="${ALPINE_VERSION:-latest}" \
-    HOME="/home/${ADMIN}" \
+ENV NON_ROOT_ADMIN="${NON_ROOT_ADMIN:-sysadm}" \
+    ALPINE_VERSION="${ALPINE_VERSION:-3.14}" \
+    HOME="/home/${NON_ROOT_ADMIN}" \
     TZ="${TZ:-UTC}" \
     RUNNING_IN_DOCKER=true
 
@@ -38,10 +38,10 @@ RUN apk update && \
     chmod 0640 /etc/shadow && \
     mkdir -p "${HOME}" && \
     mkdir -p /etc/sudoers.d && \
-    echo "${ADMIN} ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/${ADMIN}" && \
-    chmod 0440 "/etc/sudoers.d/${ADMIN}" && \
-    adduser -D -h "${HOME}" -s /bin/ash "${ADMIN}";
+    echo "${NON_ROOT_ADMIN} ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/${NON_ROOT_ADMIN}" && \
+    chmod 0440 "/etc/sudoers.d/${NON_ROOT_ADMIN}" && \
+    adduser -D -h "${HOME}" -s /bin/ash "${NON_ROOT_ADMIN}";
 
-USER "${ADMIN}"
+USER "${NON_ROOT_ADMIN}"
 WORKDIR "${HOME}"
 CMD "/bin/ash"
