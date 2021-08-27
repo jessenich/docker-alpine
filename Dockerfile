@@ -34,8 +34,9 @@ RUN apk update && \
         yq \
         shadow \
         sudo && \
-    rm /var/cache/apk/* && \
-    chmod 0640 /etc/shadow && \
+        rm /var/cache/apk/*;
+
+RUN chmod 0640 /etc/shadow && \
     mkdir -p "${HOME}" && \
     mkdir -p /etc/sudoers.d && \
     echo "${NON_ROOT_ADMIN} ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/${NON_ROOT_ADMIN}" && \
