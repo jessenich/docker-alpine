@@ -20,7 +20,7 @@ ENV NON_ROOT_ADMIN="${NON_ROOT_ADMIN:-sysadm}" \
 USER root
 
 COPY ./lxfs /
-RUN apk update && \
+RUN apk update 2>/dev/null && \
         apk add \
         ca-certificates \
         nano \
