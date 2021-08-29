@@ -77,7 +77,7 @@ jobs:
             "${{ env.DOCKERHUB_LIBRARY }}/${{ env.DOCKERHUB_REPO }}"
             "ghcr.io/${{ env.GHCR_LIBRARY }}/${{ env.GHCR_REPO }}"
           tags: |
-            type=raw,enable=${{ eq(matrix.alpine-version, '3.14') }},priority=100,value=latest
+            type=raw,enable=${{ contains(matrix.alpine-version, '3.14') }},priority=100,value=latest
             type=semver,enable=${{ startsWith(github.ref, 'refs/tags/') }},pattern={{major}}.{{minor}}.{{patch}},suffix=-alpine.${{ matrix.alpine-version }}
             type=semver,enable=${{ startsWith(github.ref, 'refs/tags/') }},pattern={{major}}.{{minor}},suffix=-alpine.${{ matrix.alpine-version }}
 
