@@ -25,7 +25,21 @@ ghcr_repository="alpine";
 
 # Buildx Builder Settings
 builder_image="moby/buildkit:latest"
-platforms="linux/amd64,linux/arm64/v8,linux/arm/v7,linux/arm/v6"
+platforms="linux/amd64,linux/arm64/v8,linux/arm/v7"
+
+# OCI Labels
+oci_created= ;
+oci_authors= ;
+oci_url= ;
+oci_documentation= ;
+oci_source= ;
+oci_version= ;
+oci_revision= ;
+oci_vendor= ;
+oci_licenses= ;
+oci_ref_name= ;
+oci_title= ;
+oci_description= ;
 
 # Default to latest git tag
 image_version= ;
@@ -34,7 +48,6 @@ latest=true
 # Image Build Arguments
 alpine_version="3.14";
 username="sysadm";
-latest=false
 
 post_passthru=false;
 
@@ -62,6 +75,31 @@ __docker_build_grep_semver() {
     echo -n -e "${value}\c" | \
         sed 's/v//' | \
         grep -Eio "${semver_2_segment}"
+}
+
+__docker_build_derive_oci() {
+    # org.opencontainers.image.created - date and time on which the image was built (string, date-time as defined by RFC 3339).
+    # org.opencontainers.image.authors - Contact details of the people or organization responsible for the image (free-form string).
+    # org.opencontainers.image.url - URL to find more information on the image (string).
+    # org.opencontainers.image.documentation - URL to get documentation on the image (string).
+    # org.opencontainers.image.source - URL to get source code for building the image (string).
+    # org.opencontainers.image.version - Version of the packaged software.
+
+    # The version MAY match a label or tag in the source code repository.
+    # Version MAY be Semantic versioning-compatible.
+    # org.opencontainers.image.revision - Source control revision identifier for the packaged software.
+    # org.opencontainers.image.vendor - Name of the distributing entity, organization or individual.
+    # org.opencontainers.image.licenses - License(s) under which contained software is distributed as an SPDX License Expression.
+    # org.opencontainers.image.ref.name - Name of the reference for a target (string).
+    # org.opencontainers.image.title - Human-readable title of the image (string).
+    # org.opencontainers.image.description - Human-readable description of the software packaged in the image (string).
+
+    if [ -z "$oci_version" ]; then oci_version="org.opencontainers.image.version=${image_version}"; fi
+    if [ -z "$oci_source" ]; then oci_source="$(git remote get-url --push origin 2>/dev/null)"; fi
+
+    local oci_version="org.opencontainers.image.version=${image_version}"
+    local oci_source= ;
+    oci_source="org.opencontainers.image.source=$(git remote get-url --push origin)"
 }
 
 __docker_build_login() {
@@ -192,7 +230,7 @@ Usage: $0 [Script Options] [Builder Options] [[DockerHub Login Options] &|[GitHu
 
     Builder Options
         -b | --builder-image                 - Name, and tag if not latest, to use with BuildKit
-        -P | --platforms                     - Platform string to pass to buildkit. Defaults to 'linux/amd64,linux/arm64/v8,linux/arm/v7,linux/arm/v6'
+        -P | --platforms                     - Platform string to pass to buildkit. Defaults to 'linux/amd64,linux/arm64/v8,linux/arm/v7'
 
     DockerHub Login Options
         -dL | --dockerhub-login-endpoint     - Defaults to null, or docker.io. Only specify in special circumstances.
@@ -211,6 +249,12 @@ Usage: $0 [Script Options] [Builder Options] [[DockerHub Login Options] &|[GitHu
         -dr | --dockerhub-repository         - The repository segment of the DockerHub images namespace.
         -gl | --ghcr-library                 - The library segment of the GitHub images namespace.
         -gr | --ghcr-repository              - The repository segment of the GitHub images namespace.
+
+    OpenContainer Args
+        -oci | --oci | --oci-label        - Label(s) as described by the OCI in the format of "key=value". Note: Version is automatically added based on the image-version argument.
+                                               If a remote origin can be found and is not explicitly specified, it will be added.
+                                                 --opencontainers-label "created=01/01/2021"
+                                                 --opencontainers-label "source=https://github.com/user/repository"
 
     Build Args
         -a | --alpine-version                - Semantic version compliant string that coincides with underlying base Alpine image. See dockerhub.com/alpine for values. 'latest' is considered valid.
@@ -303,7 +347,11 @@ __docker_build_parse_args() {
 
             -P | --platforms)
                 platforms="$2"
-                shift;;
+                shift 2;;
+
+            -oci | --oci | --oci-label | --opencontainers-label)
+                oci_labels+=( "$2" );
+                shift 2;;
 
             --latest)
                 latest=true;
