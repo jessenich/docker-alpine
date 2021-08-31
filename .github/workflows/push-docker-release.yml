@@ -81,6 +81,7 @@ jobs:
             type=raw,enable=true,priority=100,value=latest-alpine.${{ matrix.alpine-version }}
             type=semver,enable=${{ startsWith(github.ref, 'refs/tags/') }},pattern={{major}}.{{minor}}.{{patch}},suffix=-alpine.${{ matrix.alpine-version }}
             type=semver,enable=${{ startsWith(github.ref, 'refs/tags/') }},pattern={{major}}.{{minor}},suffix=-alpine.${{ matrix.alpine-version }}
+          favor: latest=false
 
       - name: Build & Push Latest
         uses: docker/build-push-action@v2
