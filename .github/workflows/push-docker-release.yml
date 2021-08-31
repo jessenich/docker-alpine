@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        alpine-version: [ 3.13, 3.14 ]
+        alpine-version: [ "3.13", "3.14" ]
 
 
     name: Build Alpine Version ${{ matrix.alpine-version }}
@@ -89,8 +89,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          labels: |
-            "${{ steps.meta.output.labels }}"
+          labels: "${{ steps.meta.output.labels }}"
           build-args: |
             VARIANT=${{ matrix.alpine-version }}
             NON_ROOT_ADMIN=sysadm
@@ -98,5 +97,4 @@ jobs:
           platforms: "${{ env.platforms }}"
           pull: true
           push: true
-          tags: |
-            "${{ steps.meta.outputs.tags }}"
+          tags: "${{ steps.meta.outputs.tags }}"
