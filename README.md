@@ -6,7 +6,7 @@
 
 [![Docker Image Version (latest semver)](https://img.shields.io/docker/v/jessenich91/alpine?style=for-the-badge)](https://dockerhub.com/r/jessenich91/alpine) [![Docker Image Size (tag)](https://img.shields.io/docker/image-size/jessenich91/alpine/latest?style=for-the-badge)](https://dockerhub.com/r/jessenich91/alpine) [![Docker Pulls](https://img.shields.io/docker/pulls/jessenich91/alpine?label=DOCKERHUB%20PULLS&style=for-the-badge)](https://dockerhub.com/r/jessenich91/alpine)
 
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/jessenich/docker-alpine)
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod&style=for-the-badge)](https://gitpod.io/#https://github.com/jessenich/docker-alpine)
 
 
 [__GitHub Source__](https://github.com/jessenich/docker-alpine)
