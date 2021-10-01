@@ -7,7 +7,7 @@ on:
 
 env:
   TARGET_PLATFORMS: linux/amd64,linux/arm64/v8,linux/arm/v7
-  
+
   GHCR_URL: ghcr.io
   GHCR_LIBRARY: jessenich
   GHCR_REPO: alpine
@@ -80,7 +80,7 @@ jobs:
           labels: |
             "${{ env.LABELS }}"
           images: |
-            "docker.io/${{ DOCKERHUB_JN91_LIBRARY }}/${{ env.DOCKERHUB_JN91_REPO }}"
+            "docker.io/${{ env.DOCKERHUB_JN91_LIBRARY }}/${{ env.DOCKERHUB_JN91_REPO }}"
             "ghcr.io/${{ env.GHCR_LIBRARY }}/${{ env.GHCR_REPO }}"
           tags: |
             type=raw,enable=${{ contains(matrix.alpine-version, '3.14') }},priority=100,value=latest
