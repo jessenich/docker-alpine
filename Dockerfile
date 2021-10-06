@@ -30,7 +30,7 @@ RUN apk update 2>/dev/null && \
 
 CMD "/bin/ash";
 
-FROM root-only as sudo-userv
+FROM root-only as sudo-user
 ARG NON_ROOT_ADMIN="${NON_ROOT_ADMIN:-sysadm}"
 
 ONBUILD ENV NON_ROOT_ADMIN="${NON_ROOT_ADMIN:-sysadm}" \
