@@ -11,10 +11,8 @@ env:
   GHCR_URL: ghcr.io
   GHCR_LIBRARY: jessenich
   GHCR_REPO: alpine
-  DOCKERHUB_JN91_LIBRARY: jessenich91
-  DOCKERHUB_JN91_REPO: alpine
-  DOCKERHUB_JN_LIBRARY: jessenich
-  DOCKERHUB_JN_REPO: alpine
+  DOCKERHUB_LIBRARY: jessenich
+  DOCKERHUB_REPO: alpine
   LABELS: |
     maintainer=Jesse N. <jesse@keplerdev.com>
     org.opencontainers.image.source=https://github.com/jessenich/docker-alpine/
@@ -25,8 +23,6 @@ jobs:
     strategy:
       matrix:
         alpine-version: [ "3.13", "3.14" ]
-        OS: [ "ubuntu-latest", "ubuntu-18.04", "ubuntu-16.04", "windows-latest"]
-
 
     name: Build Alpine Version ${{ matrix.alpine-version }}
     permissions:
@@ -80,7 +76,7 @@ jobs:
           labels: |
             "${{ env.LABELS }}"
           images: |
-            "docker.io/${{ env.DOCKERHUB_JN91_LIBRARY }}/${{ env.DOCKERHUB_JN91_REPO }}"
+            "docker.io/${{ env.DOCKERHUB_LIBRARY }}/${{ env.DOCKERHUB_REPO }}"
             "ghcr.io/${{ env.GHCR_LIBRARY }}/${{ env.GHCR_REPO }}"
           tags: |
             type=raw,enable=${{ contains(matrix.alpine-version, '3.14') }},priority=100,value=latest
