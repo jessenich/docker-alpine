@@ -8,15 +8,10 @@ FROM alpine:"${VARIANT:-3.14}" as root-only
 LABEL maintainer="Jesse N. <jesse@keplerdev.com>"
 LABEL org.opencontainers.image.source="https://github.com/jessenich/docker-alpine/blob/main/Dockerfile"
 
-ENV NON_ROOT_ADMIN="${NON_ROOT_ADMIN:-sysadm}" \
-    ALPINE_VERSION="${VARIANT}" \
+ENV ALPINE_VERSION="${VARIANT}" \
     HOME="/home/${NON_ROOT_ADMIN}" \
     TZ="${TZ:-America/New_York}" \
     RUNNING_IN_DOCKER=true
-
-ONBUILD ENV NO_ROOT_ADMIN="${NON_ROOT_ADMIN:-sysadm}" \
-            HOME="/home/${NON_ROOT_ADMIN}" \
-            ALPINE_VERSION="${VARIANT}"
 
 USER root
 
@@ -33,20 +28,22 @@ RUN apk update 2>/dev/null && \
         jq \
         yq;
 
-FROM root-only as sudo-user-deps
+CMD "/bin/ash";
+
+FROM root-only as sudo-user
+ARG NON_ROOT_ADMIN="${NON_ROOT_ADMIN:-sysadm}"
+
+ONBUILD ENV NON_ROOT_ADMIN="${NON_ROOT_ADMIN:-sysadm}" \
+            HOME="/home/${NON_ROOT_ADMIN}" \
+            ALPINE_VERSION="${VARIANT}"
 
 RUN apk add --update --no-cache \
     shadow \
     sudo;
 
-FROM sudo-user-deps as sudo-user-final
-ARG USER=jessenich
-
 RUN /bin/ash /usr/sbin/addsudouser.sh "$NON_ROOT_ADMIN"
 
 USER "$NON_ROOT_ADMIN"
 WORKDIR "/home/$NON_ROOT_ADMIN"
-CMD "/bin/ash"
-
-FROM root-only AS sudo-user-on-build
+CMD "/bin/ash";
 

@@ -92,10 +92,11 @@ jobs:
           context: .
           file: ./Dockerfile
           labels: "${{ steps.meta.output.labels }}"
+          target: sudo-user
           build-args: |
             VARIANT=${{ matrix.alpine-version }}
             NON_ROOT_ADMIN=sysadm
-            TZ=UTC
+            TZ=America/New_York
           platforms: "${{ env.platforms }}"
           pull: true
           push: true
