@@ -3,25 +3,26 @@
 
 ARG VARIANT=3.14
 
-FROM alpine:"${VARIANT:-3.14}"
+FROM alpine:"${VARIANT:-3.14}" as root-only
 
 LABEL maintainer="Jesse N. <jesse@keplerdev.com>"
 LABEL org.opencontainers.image.source="https://github.com/jessenich/docker-alpine/blob/main/Dockerfile"
 
-ARG NON_ROOT_ADMIN=sysadm \
-    TZ=UTC
-
 ENV NON_ROOT_ADMIN="${NON_ROOT_ADMIN:-sysadm}" \
-    ALPINE_VERSION="${ALPINE_VERSION:-3.14}" \
+    ALPINE_VERSION="${VARIANT}" \
     HOME="/home/${NON_ROOT_ADMIN}" \
-    TZ="${TZ:-UTC}" \
+    TZ="${TZ:-America/New_York}" \
     RUNNING_IN_DOCKER=true
+
+ONBUILD ENV NO_ROOT_ADMIN="${NON_ROOT_ADMIN:-sysadm}" \
+            HOME="/home/${NON_ROOT_ADMIN}" \
+            ALPINE_VERSION="${VARIANT}"
 
 USER root
 
-COPY ./lxfs /
+COPY ./rootfs /
 RUN apk update 2>/dev/null && \
-        apk add \
+        apk --no-cache add \
         ca-certificates \
         nano \
         nano-syntax \
@@ -30,18 +31,22 @@ RUN apk update 2>/dev/null && \
         wget \
         tzdata \
         jq \
-        yq \
-        shadow \
-        sudo && \
-        rm /var/cache/apk/*;
+        yq;
 
-RUN chmod 0640 /etc/shadow && \
-    mkdir -p "${HOME}" && \
-    mkdir -p /etc/sudoers.d && \
-    echo "${NON_ROOT_ADMIN} ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/${NON_ROOT_ADMIN}" && \
-    chmod 0440 "/etc/sudoers.d/${NON_ROOT_ADMIN}" && \
-    adduser -D -h "${HOME}" -s /bin/ash "${NON_ROOT_ADMIN}";
+FROM root-only as sudo-user-deps
 
-USER "${NON_ROOT_ADMIN}"
-WORKDIR "${HOME}"
+RUN apk add --update --no-cache \
+    shadow \
+    sudo;
+
+FROM sudo-user-deps as sudo-user-final
+ARG USER=jessenich
+
+RUN /bin/ash /usr/sbin/addsudouser.sh "$NON_ROOT_ADMIN"
+
+USER "$NON_ROOT_ADMIN"
+WORKDIR "/home/$NON_ROOT_ADMIN"
 CMD "/bin/ash"
+
+FROM root-only AS sudo-user-on-build
+
