@@ -30,7 +30,7 @@ RUN apk update 2>/dev/null && \
 
 CMD "/bin/ash";
 
-FROM root-only as sudo-user
+FROM root-only as sudo-userv
 ARG NON_ROOT_ADMIN="${NON_ROOT_ADMIN:-sysadm}"
 
 ONBUILD ENV NON_ROOT_ADMIN="${NON_ROOT_ADMIN:-sysadm}" \
@@ -39,9 +39,10 @@ ONBUILD ENV NON_ROOT_ADMIN="${NON_ROOT_ADMIN:-sysadm}" \
 
 RUN apk add --update --no-cache \
     shadow \
+    bash \
     sudo;
 
-RUN /bin/ash /usr/sbin/addsudouser.sh "$NON_ROOT_ADMIN"
+RUN /bin/bash /usr/sbin/addsudouser.sh "$NON_ROOT_ADMIN"
 
 USER "$NON_ROOT_ADMIN"
 WORKDIR "/home/$NON_ROOT_ADMIN"
