@@ -23,7 +23,7 @@ jobs:
     strategy:
       matrix:
         alpine-version: [ '3.13', '3.14' ]
-        targets: [ 'root-only', 'sudo-user' ]
+        target: [ 'root-only', 'sudo-user' ]
 
     name: "Build Alpine Version: ${{ matrix.alpine-version }} | Stage: ${{ matrix.targets }}"
     permissions:
@@ -87,8 +87,8 @@ jobs:
           tags: |
             type=raw,enable=${{ ((env.target == 'root-only') && (env.version == '3.14')) }},priority=100,value=latest
             type=raw,enable=${{ ((env.target == 'sudo-user') && (env.version == '3.14')) }},priority=100,value=latest-sudo
-            type=raw,enable=${{ startsWith(env.target, 'root-only') }},priority=200,value=latest-alpine.${{ env.version }}
-            type=raw,enable=${{ startsWith(env.target, 'sudo-user') }},priority=200,value=latest-sudo-alpine.${{ env.version }}
+            type=raw,enable=${{ contains(env.target, 'root-only') }},priority=200,value=latest-alpine.${{ env.version }}
+            type=raw,enable=${{ contains(env.target, 'sudo-user') }},priority=200,value=latest-sudo-alpine.${{ env.version }}
             type=semver,enable=${{ (env.target == 'root-only' && startsWith(github.ref, 'refs/tags/')) }},priority=300,pattern={{major}}.{{minor}}.{{patch}},suffix=-alpine.${{ env.version }}
             type=semver,enable=${{ (env.target == 'root-only' && startsWith(github.ref, 'refs/tags/')) }},priority=400,pattern={{major}}.{{minor}},suffix=-alpine.${{ env.version }}
             type=semver,enable=${{ (env.target == 'sudo-user' && startsWith(github.ref, 'refs/tags/')) }},priority=300,pattern={{major}}.{{minor}}.{{patch}},suffix=sudo-alpine.${{ env.version }}
