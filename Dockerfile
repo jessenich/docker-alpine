@@ -40,7 +40,9 @@ RUN apk add --update --no-cache \
     shadow \
     sudo;
 
-RUN bash "/usr/sbin/create-users.sh" "${USER}"
+RUN chown :sudo /usr/sbin/create-users.sh && \
+    chmod 0770 /usr/sbin/create-users.sh && \
+    /usr/sbin/create-users.sh "$USER"
 USER "$USER"
 WORKDIR "/home/$USER"
 
