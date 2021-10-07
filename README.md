@@ -26,7 +26,7 @@ Baseline image used in all alpine based images with support for AMD64, armhf, an
 
 Based off Alpine 14 as of the latest release.
 
-Provisions default non rooted user defaulted to 'sysadm' with no password.
+Provisions default non rooted user defaulted to 'sysadm' with no password. Built against both Alpine 3.14 and 3.13 for AMD64, AARCH64, and ARMHF architectures.
 
 #### Installed Packages
 
@@ -39,16 +39,17 @@ Provisions default non rooted user defaulted to 'sysadm' with no password.
 - jq
 - yq
 - sudo
+- bash (upon first run)
 
 ## Running this Image
 
 Run latest, standard variant.
 
-`docker -rm -it jessenich91/alpine:latest`
+`docker -rm -it ghcr.io/jessenich/alpine:latest`
 
 To run a specific version:
 
-`docker -rm -it jessenich91/alpine:v1.7.12.alpine.3.13`
+`docker -rm -it ghcr.io/jessenich/alpine:v1.7.12.alpine.3.13`
 
 ## License
 
