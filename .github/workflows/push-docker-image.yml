@@ -11,7 +11,7 @@ env:
   GHCR_URL: ghcr.io
   GHCR_LIBRARY: jessenich
   GHCR_REPO: alpine
-  DOCKERHUB_LIBRARY: jessenich
+  DOCKERHUB_LIBRARY: jessenich91
   DOCKERHUB_REPO: alpine
   LABELS: |
     maintainer=Jesse N. <jesse@keplerdev.com>
@@ -23,8 +23,9 @@ jobs:
     strategy:
       matrix:
         alpine-version: [ "3.13", "3.14" ]
+        targets: [ "root-only", "sudo-user"]
 
-    name: Build Alpine Version ${{ matrix.alpine-version }}
+    name: "Build Alpine Version: ${{ matrix.alpine-version }} | Stage: ${{ matrix.targets }}"
     permissions:
       contents: read
       packages: write
@@ -33,28 +34,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v1
-        with:
-            version: latest
-            install: true
-            driver-opts: image=moby/buildkit:master
-            use: true
+        # with:
+        #     version: latest
+        #     install: true
+        #     driver-opts: image=moby/buildkit:master
+        #     use: true
 
-      - name: Buildx Builder Create
-        run: |
-          docker buildx create \
-            --platform "${{ env.TARGET_PLATFORMS }}" \
-            --name "github-runner-builder" \
-            --use
+      # - name: Buildx Builder Create
+      #   run: |
+      #     docker buildx create \
+      #       --platform "${{ env.TARGET_PLATFORMS }}" \
+      #       --name "github-runner-builder" \
+      #       --use
 
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
+      # - name: Cache Docker layers
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: /tmp/.buildx-cache
+      #     key: ${{ runner.os }}-buildx-${{ github.sha }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-buildx-
 
       - name: Login to Dockerhub
         uses: docker/login-action@v1
@@ -73,8 +77,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          labels: |
-            "${{ env.LABELS }}"
+          labels: ${{ env.LABELS }}
           images: |
             "docker.io/${{ env.DOCKERHUB_LIBRARY }}/${{ env.DOCKERHUB_REPO }}"
             "ghcr.io/${{ env.GHCR_LIBRARY }}/${{ env.GHCR_REPO }}"

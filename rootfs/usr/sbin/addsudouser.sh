@@ -1,17 +1,18 @@
-#!/bin/ash
+#!/bin/bash
 
 # shellcheck shell=bash disable=SC2154,SC2002
 
 declare -a sudo_users;
 
 mksudo_parse_args() {
-    while (($# > 0)); do
+    if [ "$#" -le 1 ]; then
+        echo "At least one user argument is required." >&2;
+    fi
+
+    while [ "$#" -gt 0 ]; do
         sudo_users+=( "$(echo "$1" | tr -d ' ')" );
         shift;
     done
-
-    if (("${sudo_users[*]}" = 0)); then echo "At least one user argument is required." >&2; 
-    else return 0; fi
 }
 
 mksudo_init_nopasswd_sudoers() {

@@ -1,16 +1,17 @@
 # Copyright (c) 2021 Jesse N. <jesse@keplerdev.com>
 # This work is licensed under the terms of the MIT license. For a copy, see <https://opensource.org/licenses/MIT>.
 
-ARG VARIANT=3.14
+ARG VARIANT=3.14 \
+    TZ=America/New_York
 
 FROM alpine:"${VARIANT:-3.14}" as root-only
 
 LABEL maintainer="Jesse N. <jesse@keplerdev.com>"
 LABEL org.opencontainers.image.source="https://github.com/jessenich/docker-alpine/blob/main/Dockerfile"
 
-ENV ALPINE_VERSION="${VARIANT}" \
-    HOME="/home/${NON_ROOT_ADMIN}" \
-    TZ="${TZ:-America/New_York}" \
+ENV VARIANT="$VARIANT" \
+    HOME="/home/$NON_ROOT_ADMIN" \
+    TZ="$TZ" \
     RUNNING_IN_DOCKER=true
 
 USER root
@@ -28,23 +29,18 @@ RUN apk update 2>/dev/null && \
         jq \
         yq;
 
-CMD "/bin/ash";
-
 FROM root-only as sudo-user
-ARG NON_ROOT_ADMIN="${NON_ROOT_ADMIN:-sysadm}"
+ARG USER="sysadm"
 
-ONBUILD ENV NON_ROOT_ADMIN="${NON_ROOT_ADMIN:-sysadm}" \
-            HOME="/home/${NON_ROOT_ADMIN}" \
-            ALPINE_VERSION="${VARIANT}"
+ONBUILD ENV NON_ROOT_ADMIN="$USER" \
+            HOME="/home/$USER" \
+            ALPINE_VERSION="$VARIANT"
 
 RUN apk add --update --no-cache \
     shadow \
-    bash \
     sudo;
 
-RUN /bin/bash /usr/sbin/addsudouser.sh "$NON_ROOT_ADMIN"
-
-USER "$NON_ROOT_ADMIN"
-WORKDIR "/home/$NON_ROOT_ADMIN"
-CMD "/bin/ash";
+USER "$USER"
+WORKDIR "/home/$USER"
+ENTRYPOINT "/usr/sbin/entrypoint.sh"
 
