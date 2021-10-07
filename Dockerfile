@@ -29,7 +29,7 @@ RUN apk update 2>/dev/null && \
         jq \
         yq;
 
-FROM root-only as sudo
+FROM root as sudo
 ARG USER="sysadm"
 
 ONBUILD ENV NON_ROOT_ADMIN="$USER" \
