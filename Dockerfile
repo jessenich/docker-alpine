@@ -4,7 +4,7 @@
 ARG VARIANT=3.14 \
     TZ=America/New_York
 
-FROM alpine:"${VARIANT:-3.14}" as root-only
+FROM alpine:"$VARIANT" as root
 
 LABEL maintainer="Jesse N. <jesse@keplerdev.com>"
 LABEL org.opencontainers.image.source="https://github.com/jessenich/docker-alpine/blob/main/Dockerfile"
@@ -29,7 +29,7 @@ RUN apk update 2>/dev/null && \
         jq \
         yq;
 
-FROM root-only as sudo-user
+FROM root-only as sudo
 ARG USER="sysadm"
 
 ONBUILD ENV NON_ROOT_ADMIN="$USER" \
@@ -40,10 +40,8 @@ RUN apk add --update --no-cache \
     shadow \
     sudo;
 
-RUN /bin/sh /usr/sbin/create-users.sh "$USER" && \
-    chown :sudo /usr/sbin/create-users.sh && \
-    chmod 0770 /usr/sbin/create-users.sh
-    
+RUN /bin/sh /usr/sbin/create-users.sh "$USER"
+
 USER "$USER"
 WORKDIR "/home/$USER"
 
