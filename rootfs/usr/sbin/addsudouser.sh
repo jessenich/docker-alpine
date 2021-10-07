@@ -39,4 +39,8 @@ mksudo_create_users() {
     return 0;
 }
 
+mksudo_parse_args "$@";
+mksudo_init_nopasswd_sudoers;
+mksudo_create_users
+
 exit 0;
