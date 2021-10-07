@@ -35,6 +35,7 @@ mksudo_create_users() {
     for user in "${sudo_users[@]}"; do
         adduser -D --gecos '' "$user";
         usermod -aG sudo "$user";
+        chsh -s /bin/bash "$user";
     done
     return 0;
 }

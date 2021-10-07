@@ -40,7 +40,7 @@ RUN apk add --update --no-cache \
     shadow \
     sudo;
 
+RUN bash "/usr/sbin/create-users.sh" "${USER}"
 USER "$USER"
 WORKDIR "/home/$USER"
-ENTRYPOINT "/usr/sbin/entrypoint.sh"
 
