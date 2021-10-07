@@ -16,6 +16,9 @@ mksudo_parse_args() {
 }
 
 mksudo_init_nopasswd_sudoers() {
+    groupadd sudo
+    addgroup root sudo
+    chown :sudo /etc/shadow;
     chmod 0640 /etc/shadow;
     mkdir -p /etc/sudoers.d;
 
@@ -35,6 +38,7 @@ mksudo_create_users() {
     for user in "${sudo_users[@]}"; do
         adduser -D --gecos '' "$user";
         usermod -aG sudo "$user";
+        addgroup "$user" sudo
         chsh -s /bin/bash "$user";
     done
     return 0;
