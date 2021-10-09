@@ -8,7 +8,6 @@
 
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod&style=for-the-badge)](https://gitpod.io/#https://github.com/jessenich/docker-alpine)
 
-
 [__GitHub Source__](https://github.com/jessenich/docker-alpine)
 
 `docker pull jessenich91/alpine:latest`
@@ -19,14 +18,13 @@
 
 ## What is this image?
 
-
 Baseline image used in all alpine based images with support for AMD64, armhf, and arm64 architectures.
 
 ### Image Meta
 
 Based off Alpine 14 as of the latest release.
 
-Provisions default non rooted user defaulted to 'sysadm' with no password. Built against both Alpine 3.14 and 3.13 for AMD64, AARCH64, and ARMHF architectures.
+Provisions default non root user defaulted to 'sysadm' with no password. Built against both Alpine 3.14 and 3.13 for AMD64, AARCH64, and ARMHF architectures.
 
 #### Installed Packages
 
@@ -47,13 +45,15 @@ Run latest, standard variant.
 
 `docker -rm -it ghcr.io/jessenich/alpine:latest`
 
-To run a specific version:
+To latest variant with non-root user, use `latest-sudo` tag:
 
-`docker -rm -it ghcr.io/jessenich/alpine:v1.7.12.alpine.3.13`
+`docker -rm -it ghcr.io/jessenich/alpine:latest-sudo`
+
+YOu can attach `sudo` to any tag to get its non-root variant. Note: non-root variants have bash installed whereas root variants do not.
 
 ## License
 
-Copyright (c) 2021 Jesse N. <jesse@keplerdev.com>. See [LICENSE](https://github.com/jessenich/docker-alpine-base/blob/master/LICENSE) for license information.
+Copyright (c) Jesse N. <jesse@keplerdev.com>. See [LICENSE](https://github.com/jessenich/docker-alpine-base/blob/master/LICENSE) for license information.
 
 As with all Docker images, the built image likely also contains other software which may be under other licenses (such as software
 from the base distribution, along with any direct or indirect dependencies of the primary software being contained).
