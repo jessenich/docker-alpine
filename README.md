@@ -49,7 +49,7 @@ To latest variant with non-root user, use `latest-sudo` tag:
 
 `docker -rm -it ghcr.io/jessenich/alpine:latest-sudo`
 
-YOu can attach `sudo` to any tag to get its non-root variant. Note: non-root variants have bash installed whereas root variants do not.
+You can attach `sudo` to any tag to get its non-root variant. Note: non-root variants have bash installed whereas root variants do not.
 
 ## License
 
