@@ -18,7 +18,7 @@
 
 ## What is this image?
 
-Baseline image used in all alpine based images with support for AMD64, armhf, and arm64 architectures.
+Baseline image used in all alpine based images with support for amd64, armhf, and aarch64 architectures.
 
 ### Image Meta
 
