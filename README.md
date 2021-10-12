@@ -24,7 +24,7 @@ Baseline image used in all alpine based images with support for AMD64, armhf, an
 
 Based off Alpine 14 as of the latest release.
 
-Provisions default non root user defaulted to 'sysadm' with no password. Built against both Alpine 3.14 and 3.13 for AMD64, AARCH64, and ARMHF architectures.
+Provisions default non root user defaulted to 'sysadm' with no password. Built against both Alpine 3.14 and 3.13 for amd64, aarch64, and armhf architectures.
 
 #### Installed Packages
 
