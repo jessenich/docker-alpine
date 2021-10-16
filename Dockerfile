@@ -6,8 +6,8 @@ ARG VARIANT=3.14 \
 
 FROM alpine:"$VARIANT" as root
 
-LABEL maintainer="Jesse N. <jesse@keplerdev.com>"
-LABEL org.opencontainers.image.source="https://github.com/jessenich/docker-alpine/blob/main/Dockerfile"
+LABEL maintainer="Jesse N. <jesse@keplerdev.com>" \
+    org.opencontainers.image.source=https://github.com/jessenich/docker-alpine/blob/main/Dockerfile
 
 ENV VARIANT="$VARIANT" \
     HOME="/home/$NON_ROOT_ADMIN" \
@@ -17,8 +17,7 @@ ENV VARIANT="$VARIANT" \
 USER root
 
 COPY ./rootfs /
-RUN apk update 2>/dev/null && \
-        apk --no-cache add \
+RUN apk --update --no-cache add \
         ca-certificates \
         nano \
         nano-syntax \
@@ -30,18 +29,12 @@ RUN apk update 2>/dev/null && \
         yq;
 
 FROM root as sudo
-ARG USER="sysadm"
-
-ONBUILD ENV NON_ROOT_ADMIN="$USER" \
-            HOME="/home/$USER" \
-            ALPINE_VERSION="$VARIANT"
+ENV USER="sysadm"
 
 RUN apk add --update --no-cache \
-    shadow \
-    sudo;
-
-RUN /bin/sh /usr/sbin/create-users.sh "$USER"
+        shadow \
+        sudo;
 
 USER "$USER"
 WORKDIR "/home/$USER"
-
+ENTRYPOINT [ "/usr/sbin/entrypoint", "$USER" ]

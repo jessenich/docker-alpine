@@ -1,19 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # shellcheck shell=bash disable=SC2154,SC2002
-
-declare -a sudo_users;
-
-mksudo_parse_args() {
-    if [ "$#" -le 1 ]; then
-        echo "At least one user argument is required." >&2;
-    fi
-
-    while [ "$#" -gt 0 ]; do
-        sudo_users+=( "$(echo "$1" | tr -d ' ')" );
-        shift;
-    done
-}
 
 mksudo_init_nopasswd_sudoers() {
     groupadd sudo
@@ -34,18 +21,15 @@ mksudo_init_nopasswd_sudoers() {
     return 0;
 }
 
-mksudo_create_users() {
-    for user in "${sudo_users[@]}"; do
-        adduser -D --gecos '' "$user";
-        usermod -aG sudo "$user";
-        addgroup "$user" sudo
-        chsh -s /bin/bash "$user";
-    done
+mksudo_create_user() {
+    user="$1";
+    adduser -D --gecos '' "$user";
+    usermod -aG sudo "$user";
+    addgroup "$user" sudo;
     return 0;
 }
 
-mksudo_parse_args "$@";
 mksudo_init_nopasswd_sudoers;
-mksudo_create_users
+mksudo_create_users "$1";
 
 exit 0;
