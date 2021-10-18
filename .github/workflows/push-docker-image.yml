@@ -81,12 +81,14 @@ jobs:
           tags: |
             type=raw,enable=${{ env.target == 'root' && env.version == '3.14' }},priority=100,value=latest
             type=raw,enable=${{ env.version == '3.14' }},priority=100,value=${{ env.target }}
-            type=raw,enable=${{ env.target == 'root' }},priority=200,value=root-v${{ env.version }}
-            type=raw,enable=${{ env.target == 'sudo' }},priority=200,value=sudo-v${{ env.version }}
+            type=raw,enable=${{ env.target == 'root' }},priority=200,value=${{ env.target }}.v${{ env.version }}
+            type=raw,enable=${{ env.target == 'sudo' }},priority=200,value=sudo.v${{ env.version }}
             type=semver,enable=${{ env.target == 'root' }},priority=300,pattern={{major}}.{{minor}}.{{patch}},suffix=-v${{ env.version }}
+            type=semver,enable=${{ env.target == 'root' }},priority=300,pattern={{major}}.{{minor}}.{{patch}},suffix=-root.v${{ env.version }}
             type=semver,enable=${{ env.target == 'sudo' }},priority=300,pattern={{major}}.{{minor}}.{{patch}},suffix=-sudo.v${{ env.version }}
             type=semver,enable=${{ env.target == 'root' }},priority=400,pattern={{major}}.{{minor}},suffix=-v${{ env.version }}
-            type=semver,enable=${{ env.target == 'sudo' }},priority=400,pattern={{major}}.{{minor}},suffix=-sudo-v${{ env.version }}
+            type=semver,enable=${{ env.target == 'root' }},priority=400,pattern={{major}}.{{minor}},suffix=-root.v${{ env.version }}
+            type=semver,enable=${{ env.target == 'sudo' }},priority=400,pattern={{major}}.{{minor}},suffix=-sudo.v${{ env.version }}
           flavor: latest=false
 
       - name: Build & Push Latest
