@@ -8,11 +8,12 @@
 
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/jessenich/docker-alpine)
 
-
 [__GitHub Source__](https://github.com/jessenich/docker-alpine)
 
-`docker pull jessenich91/alpine:latest`
+`docker pull ghcr.io/jessenich/docker-alpine:root`
+`docker pull ghcr.io/jessenich/docker-alpine:sudo`
 
 [__DockerHub Registry__](https://dockerhub.com/r/jessenich91/alpine)
 
-`docker pull ghcr.io/jessenich/docker-alpine:latest`
+`docker pull jessenich91/alpine:root`
+`docker pull jessenich91/alpine:sudo`

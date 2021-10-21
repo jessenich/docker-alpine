@@ -17,6 +17,8 @@ ENV VARIANT="$VARIANT" \
 USER root
 
 COPY ./rootfs /
+RUN chmod ug+wrx /usr/sbin/addsudouser.sh && \
+    chmod ug+wrx /usr/sbin/entrypoint.sh
 RUN apk --update --no-cache add \
         ca-certificates \
         nano \
@@ -31,7 +33,6 @@ RUN apk --update --no-cache add \
 FROM root as sudo
 ENV USER="sysadm"
 
-SHELL [ "/bin/ash", "-c" ]
 RUN apk --update --no-cache add shadow sudo
 
 ENTRYPOINT [ "/usr/sbin/entrypoint", "$USER" ]

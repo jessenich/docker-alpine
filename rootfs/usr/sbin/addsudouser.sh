@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env ash
 
 # shellcheck shell=bash disable=SC2154,SC2002
 
@@ -18,8 +18,8 @@ mksudo_init_nopasswd_sudoers() {
 mksudo_create_user() {
     user="$1";
     adduser -D --gecos '' "$user";
-    usermod -aG sudo "$user";
-    addgroup "$user" sudo;
+    adduser "$user" sudo
+    adduser "$user" wheel
     return 0;
 }
 

@@ -278,7 +278,7 @@ __docker_build_parse_args() {
 
             -f | --version-format)
                 case "$2" in
-                    "default" | "git-tag" | "explicit")
+                    "default" | "git-tag")
                         version_format="$2";;
 
                     *)
@@ -365,9 +365,9 @@ __docker_build_parse_args() {
                 test "$verbose" && echo "$image_version"
 
                 # shellcheck disable=SC2128
-                if [ "${post_passthru}" = true ]; then
+                if [ "$post_passthru" = true ]; then
                     passthru+=( "$1" );
-                elif [ -z "${image_version}" ]; then
+                elif [ -z "$image_version" ]; then
                     image_version="$1"
                 else
                     echo "Invalid option supplied '$1'";

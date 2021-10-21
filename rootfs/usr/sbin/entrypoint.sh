@@ -1,3 +1,3 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ash
 
-/bin/sh /usr/sbin/addsudouser.sh "$1"
+/usr/sbin/addsudouser.sh "$1"
