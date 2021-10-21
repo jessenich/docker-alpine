@@ -31,10 +31,9 @@ RUN apk --update --no-cache add \
 FROM root as sudo
 ENV USER="sysadm"
 
-RUN apk add --update --no-cache \
-        shadow \
-        sudo;
+SHELL [ "/bin/ash", "-c" ]
+RUN apk --update --no-cache add shadow sudo
 
-USER "$USER"
-WORKDIR "/home/$USER"
 ENTRYPOINT [ "/usr/sbin/entrypoint", "$USER" ]
+WORKDIR "/home/$USER"
+USER "$USER"

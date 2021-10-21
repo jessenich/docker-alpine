@@ -25,7 +25,7 @@ ghcr_repository="alpine";
 
 # Buildx Builder Settings
 builder_image="moby/buildkit:latest"
-platforms="linux/amd64,linux/arm64/v8,linux/arm/v7"
+platforms="linux/amd64,linux/arm64/v8"
 
 # OCI Labels
 oci_created= ;
@@ -42,7 +42,6 @@ oci_title= ;
 oci_description= ;
 
 # Default to latest git tag
-image_version= ;
 latest=true
 
 # Image Build Arguments
