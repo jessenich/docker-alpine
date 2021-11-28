@@ -23,7 +23,7 @@ ghcr_repository="alpine";
 
 # Buildx Builder Settings
 builder_image="moby/buildkit:latest"
-platforms="linux/amd64,linux/arm64/v8,linux/arm/v7,linux/arm/v6"
+platforms="linux/amd64,linux/arm64/v8,linux/arm/v7"
 
 image_version= ;
 latest="3.14"

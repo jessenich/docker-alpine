@@ -3,7 +3,7 @@
 # Copyright (c) 2021 Jesse N. <jesse@keplerdev.com>
 # This work is licensed under the terms of the MIT license. For a copy, see <https://opensource.org/licenses/MIT>.
 
-# shellcheck disable=SC2034,SC2120
+# shellcheck disable=SC2034,SC2120,SC2155
 
 # DockerHub Registry Settings
 dockerhub_login_endpoint="https://docker.io";
@@ -97,53 +97,53 @@ __docker_build_derive_oci() {
     if [ -z "$oci_source" ]; then oci_source="$(git remote get-url --push origin 2>/dev/null)"; fi
 
     local oci_version="org.opencontainers.image.version=${image_version}"
-    local oci_source= ;
+    local oci_source;
     oci_source="org.opencontainers.image.source=$(git remote get-url --push origin)"
 }
 
 __docker_build_login() {
-    local __registry="$1";
-    local __username="$2";
-    local __password="$3";
-    local __password_stdin= ;
+    local registry="$1";
+    local username="$2";
+    local password="$3";
+    local password_stdin="$(test "$password" = "--password-stdin" && echo true || echo false)";
 
-    __registry="$(echo "${__registry}" | grep -Eio '^([[:alnum:]]+([\.]){1})+.+$')";
-    if [ -z "${__registry}" ] && [ -n "$1" ]; then
-        __registry="docker.io";
-        __username="${__registry}";
-        __password="$2";
+    registry="$(echo "${registry}" | grep -Eio '^([[:alnum:]]+([\.]){1})+.+$')";
+    if [ -z "${registry}" ] && [ -n "$1" ]; then
+        registry="docker.io";
+        username="${registry}";
+        password="$2";
     fi
 
     # If neither a password or stdin option supplied, error out.
-    if [ -z "${__password}" ] && [ -z "${__password-stdin}" ]; then
-        echo "ERR: Password is required to login to docker registry '${__registry}'." 1>&2;
+    if [ -z "${password}" ] && [ -z "${password-stdin}" ]; then
+        echo "ERR: Password is required to login to docker registry '${registry}'." 1>&2;
         echo "";
         show_usage
         exit 1;
     # Password is defaulted to the 3rd ordinal parameter - check if this was actually a switch for stdin input
-    elif [[ "${__password}" = *"password-stdin"* ]]; then
-        unset __password;
-        __password_stdin=true;
+    elif [[ "${password}" = *"password-stdin"* ]]; then
+        unset password;
+        password_stdin=true;
     fi
 
 
 
-    if [ -n "${registry}" ] || [ -n "${registry_username}" ]; then
+    if [ -n "${registry}" ] || [ -n "${username}" ]; then
         login_result=false;
 
-        if [ -z "${registry_password}" ] && [ "${registry_password_stdin}" = false ];
+        if [ -z "${password}" ] && [ "${password_stdin}" = false ];
         then
             echo "ERR: Password required to login to registry '${registry}'" 1>&2;
             show_usage
             exit 2;
 
-        elif [ -n "${registry_password}" ];
+        elif [ -n "${password}" ];
         then
-            login_result="$(docker login "${__registry}" --username "${__username}" --password "${__password}")" 1>/dev/null 2>&1;
+            login_result="$(docker login "${registry}" --username "${username}" --password "${password}")" 1>/dev/null 2>&1;
 
-        elif [ "${registry_password_stdin}" ];
+        elif [ "${password_stdin}" = true ];
         then
-            login_result="$(docker login "${__registry}" --username "${__username}" --password-stdin)" 1>/dev/null 2>&1;
+            login_result="$(docker login "${registry}" --username "${username}" --password-stdin)" 1>/dev/null 2>&1;
 
         elif [[ "${registry}" = *"acr.azure.com"* ]];
         then
