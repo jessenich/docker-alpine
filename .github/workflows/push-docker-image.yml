@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        alpine-version: [ '3.13', '3.14' ]
+        alpine-version: [ '3.13', '3.14', '3.15', '3.16' ]
         target: [ 'root', 'sudo' ]
 
     name: "Build Alpine Version: ${{ matrix.alpine-version }} | Stage: ${{ matrix.target }}"
