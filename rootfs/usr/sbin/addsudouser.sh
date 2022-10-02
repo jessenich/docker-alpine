@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-
-# shellcheck shell=bash disable=SC2154,SC2002
+# shellcheck shell=bash disable=S
+C2154,SC2002
 
 mksudo_create_user() {
     while [ "$#" -gt 0 ]; do
@@ -40,6 +40,7 @@ mksudo_create_user() {
     home=${home:-${HOME:=/home/$user}};
     shell=${shell:-${SHELL:=/bin/ash}};
     password=${password:-${PASSWORD:=$(pwgen -s -1)}};
+
 
     if [ "$user" = "root" ]; then
         echo "User root is not allowed"

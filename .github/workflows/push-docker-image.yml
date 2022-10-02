@@ -22,7 +22,15 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        alpine-version: [ '3.13', '3.14', '3.15', '3.16' ]
+        alpine-version:
+          - version: '3.13'
+            latest: false
+          - version: '3.14'
+            latest: false
+          - version: '3.15'
+            latest: false
+          - version: '3.16'
+            latest: true
         target: [ 'root', 'sudo' ]
 
     name: "Build Alpine Version: ${{ matrix.alpine-version }} | Stage: ${{ matrix.target }}"
@@ -79,8 +87,8 @@ jobs:
             "docker.io/${{ env.DOCKERHUB_LIBRARY }}/${{ env.DOCKERHUB_REPO }}"
             "ghcr.io/${{ env.GHCR_LIBRARY }}/${{ env.GHCR_REPO }}"
           tags: |
-            type=raw,enable=${{ env.target == 'root' && env.version == '3.14' }},priority=100,value=latest
-            type=raw,enable=${{ env.version == '3.14' }},priority=100,value=${{ env.target }}
+            type=raw,enable=${{ env.latest }},priority=100,value=latest
+            type=raw,enable=${{ env.latest }},priority=100,value=${{ env.target }}
             type=raw,enable=true,priority=200,value=${{ env.target }}.${{ env.version }}
             type=semver,enable=${{ env.target == 'root' }},priority=300,pattern={{major}}.{{minor}}.{{patch}},suffix=-${{ env.version }}
             type=semver,enable=${{ env.target == 'root' }},priority=400,pattern={{major}}.{{minor}}.{{patch}},suffix=-root.${{ env.version }}
