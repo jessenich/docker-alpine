@@ -1,25 +1,24 @@
 # Copyright (c) 2021 Jesse N. <jesse@keplerdev.com>
 # This work is licensed under the terms of the MIT license. For a copy, see <https://opensource.org/licenses/MIT>.
 
-ARG VARIANT=3.15 \
-    TZ=America/New_York \
-    TAG \
-    REVISION_SHORT
+ARG VARIANT=3.15
+ARG TZ=America/New_York
+ARG TAG
+ARG REVISION_SHORT
 
 FROM alpine:"$VARIANT" as root
 
-
-
-ENV DISTRO=alpine \
-    VARIANT="$VARIANT" \
-    TZ="$TZ" \
-    RUNNING_IN_DOCKER=true \
-    TAG="$TAG" \
-    REVISION_SHORT="$REVISION_SHORT"
+ENV DISTRO=alpine
+ENV VARIANT="$VARIANT"
+ENV TZ="$TZ"
+ENV RUNNING_IN_DOCKER=true
+ENV TAG="$TAG"
+ENV REVISION_SHORT="$REVISION_SHORT"
 
 USER root
 
 COPY ./rootfs /
+
 RUN chmod ug+wrx /usr/sbin/addsudouser.sh && \
     chmod ug+wrx /usr/sbin/entrypoint.sh
 
