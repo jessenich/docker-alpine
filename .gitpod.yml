@@ -2,7 +2,15 @@ image: gitpod/workspace-full
 
 vscode:
   extensions:
-    - ms-azuretools.vscode-docker
+  - ms-azuretools.vscode-docker
+  - formulahendry.docker-explorer
+  - lizebang.bash-extension-pack
+  - ms-kubernetes-tools.vscode-aks-tools
+  - tetradresearch.vscode-h2o
+  - shakram02.bash-beautify
+  - deepinthought.vscode-shell-snippets
+  - evgeniypeshkov.syntax-highlighter
+  - bmalehorn.shell-syntax
 
 github:
   prebuilds:

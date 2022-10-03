@@ -27,20 +27,6 @@ ghcr_repository="alpine";
 builder_image="moby/buildkit:latest"
 platforms="linux/amd64,linux/arm64/v8"
 
-# OCI Labels
-oci_created= ;
-oci_authors= ;
-oci_url= ;
-oci_documentation= ;
-oci_source= ;
-oci_version= ;
-oci_revision= ;
-oci_vendor= ;
-oci_licenses= ;
-oci_ref_name= ;
-oci_title= ;
-oci_description= ;
-
 # Default to latest git tag
 latest=true
 
@@ -77,28 +63,14 @@ __docker_build_grep_semver() {
 }
 
 __docker_build_derive_oci() {
-    # org.opencontainers.image.created - date and time on which the image was built (string, date-time as defined by RFC 3339).
-    # org.opencontainers.image.authors - Contact details of the people or organization responsible for the image (free-form string).
-    # org.opencontainers.image.url - URL to find more information on the image (string).
-    # org.opencontainers.image.documentation - URL to get documentation on the image (string).
-    # org.opencontainers.image.source - URL to get source code for building the image (string).
-    # org.opencontainers.image.version - Version of the packaged software.
-
-    # The version MAY match a label or tag in the source code repository.
-    # Version MAY be Semantic versioning-compatible.
-    # org.opencontainers.image.revision - Source control revision identifier for the packaged software.
-    # org.opencontainers.image.vendor - Name of the distributing entity, organization or individual.
-    # org.opencontainers.image.licenses - License(s) under which contained software is distributed as an SPDX License Expression.
-    # org.opencontainers.image.ref.name - Name of the reference for a target (string).
-    # org.opencontainers.image.title - Human-readable title of the image (string).
-    # org.opencontainers.image.description - Human-readable description of the software packaged in the image (string).
-
     if [ -z "$oci_version" ]; then oci_version="org.opencontainers.image.version=${image_version}"; fi
     if [ -z "$oci_source" ]; then oci_source="$(git remote get-url --push origin 2>/dev/null)"; fi
 
-    local oci_version="org.opencontainers.image.version=${image_version}"
-    local oci_source;
-    oci_source="org.opencontainers.image.source=$(git remote get-url --push origin)"
+    # Get new tags from remote
+    git fetch --tags >/dev/null 2>&1
+
+    local oci_version="org.opencontainers.image.version=$(git describe --tags "$(git rev-list --tags --max-count=1)")"
+    local oci_source="org.opencontainers.image.source=$(git remote get-url --push origin)"
 }
 
 __docker_build_login() {
@@ -222,10 +194,10 @@ Usage: $0 [Script Options] [Builder Options] [[DockerHub Login Options] &|[GitHu
     Script Parameters
         -h | --help                          - Show this help screen.
         -v | --verbose                       - Print verbose information to stdout.
-        -f | --version-format                 - Method in which script detects the version to use. Valid options include
-                                                 "default": Use latest git tag if image version not already specified. This is the default value.
-                                                 "git-tag": Ignore specified image version argument and use latest git tag
-                                                 "explicit": Use only the value passed with -i | --image-version. Errors if no value is supplied.
+        -f | --version-format                - Method in which script detects the version to use. Valid options include
+                                                "default": Use latest git tag if image version not already specified. This is the default value.
+                                                "git-tag": Ignore specified image version argument and use latest git tag
+                                                "explicit": Use only the value passed with -i | --image-version. Errors if no value is supplied.
 
     Builder Options
         -b | --builder-image                 - Name, and tag if not latest, to use with BuildKit
@@ -249,6 +221,7 @@ Usage: $0 [Script Options] [Builder Options] [[DockerHub Login Options] &|[GitHu
         -gl | --ghcr-library                 - The library segment of the GitHub images namespace.
         -gr | --ghcr-repository              - The repository segment of the GitHub images namespace.
 
+    [EXPERIMENTAL]
     OpenContainer Args
         -oci | --oci | --oci-label        - Label(s) as described by the OCI in the format of "key=value". Note: Version is automatically added based on the image-version argument.
                                                If a remote origin can be found and is not explicitly specified, it will be added.
